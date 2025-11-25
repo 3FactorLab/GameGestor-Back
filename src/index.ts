@@ -13,10 +13,10 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
-//Definimos lo sestándares de seguridad: helmet -> cors -> express-rate-limit
-//configureSecurity(app);
+// Seguridad base: helmet -> cors -> rate limit
+configureSecurity(app);
 
-//Documentación conSwagger
+// Documentación Swagger
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
 
@@ -25,20 +25,20 @@ app.use("/usuarios", userRoutes);
 app.use("/usuarios", userGameRoutes);
 app.use("/juegos", gameRoutes);
 
-// Servir archivos estáticos
-// Permite acceder a las imágenes subidas desde el navegador (ej: localhost:5000/uploads/foto.jpg)
+// Estáticos (uploads)
 app.use("/uploads", express.static("uploads"));
 
 // Ruta de prueba
-app.get("/", (req, res) => {
-  res.json({ message: "API GameGestor TypeScript 🚀" });
+app.get("/", (_req, res) => {
+  res.json({ message: "API GameGestor TypeScript OK" });
 });
 
 const startServer = async () => {
   await connectDB();
 
   app.listen(port, () => {
-    console.log(`🚀 Servidor en http://localhost:${port}`);
+    console.log(`Servidor en http://localhost:${port}`);
+    console.log(`Swagger en http://localhost:${port}/docs`);
   });
 };
 

@@ -7,3 +7,4 @@
 - 2025-11-25: Añadidos usuarios seed `raulr`, `luciaj`, `danielv` para alinear con entradas de userGames y evitar omisiones.
 - 2025-11-25: Mejorada llamada a RAWG con User-Agent, timeout y logs; errores externos devuelven 502 con detalle.
 - 2025-11-25: getOrCreateGameByExternalId ahora reusa juegos existentes por título (si no tienen externalId) para evitar duplicados por índice único; import dotenv en externalGamesApi.service.
+- 2025-11-25: Reescrito index.ts para activar configureSecurity y limpiar comentarios; externalGamesApi.service ahora documentado.

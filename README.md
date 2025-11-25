@@ -123,8 +123,8 @@ Para más detalle visual, revisa `flujos.md` y `documents/Readme&POST.md`.
 
 🧭 Notas de calidad y próximos pasos
 
-- Añadir tests (Jest + Supertest) para auth, validaciones y roles (actualmente solo hay un placeholder en src/tests/health.test.ts).
-- Activar `configureSecurity(app)` en `src/index.ts` para entornos públicos y ajustar CORS a los orígenes del frontend.
+- Añadir tests (Jest + Supertest) para auth, validaciones y roles (ejemplo inicial en `src/tests/api.test.ts` con mocks).
+- Ajustar CORS en `configureSecurity(app)` para el dominio del frontend.
 - Sustituir logs por un logger estructurado (p.ej. Winston) y añadir manejo de errores global.
 - Extender `/usuarios/me/library` para aceptar `externalId` y crear el juego vía RAWG automáticamente (hoy requiere `gameId` existente).
 

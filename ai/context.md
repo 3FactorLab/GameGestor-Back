@@ -48,3 +48,10 @@
   - Próximos pasos: Probar de nuevo `/juegos/external/3498` (GTA V) y otros IDs; si ya está el título en seeds, debe asociar el externalId sin duplicar.
   - Archivos tocados: src/services/externalGamesApi.service.ts, src/services/game.service.ts.
   - Notas/Riesgos: Coincidencias por título pueden fallar si el naming difiere; en ese caso se requeriría un mapping más robusto.
+
+- 2025-11-25T00:00:00Z
+  - Acciones: Se reescribió `src/index.ts` para activar configureSecurity y limpiar comentarios corruptos; se añadió documentación mínima en externalGamesApi.service.ts.
+  - Decisiones: Aplicar seguridad base (helmet/cors/rate limit) por defecto.
+  - Próximos pasos: Ajustar CORS en config/security según el dominio del frontend; añadir tests pendientes.
+  - Archivos tocados: src/index.ts, src/services/externalGamesApi.service.ts.
+  - Notas/Riesgos: Comentarios de seguridad deben revisarse cuando se configuren orígenes permitidos.
