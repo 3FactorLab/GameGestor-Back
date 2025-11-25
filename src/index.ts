@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import { connectDB } from "./config/db";
 import userRoutes from "./routes/user.router";
 import gameRoutes from "./routes/game.router";
+import userGameRoutes from "./routes/userGame.router";
 import "dotenv/config";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./docs/swagger";
@@ -21,6 +22,7 @@ app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
 
 // Rutas
 app.use("/usuarios", userRoutes);
+app.use("/usuarios", userGameRoutes);
 app.use("/juegos", gameRoutes);
 
 // Servir archivos estáticos

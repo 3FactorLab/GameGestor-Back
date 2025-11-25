@@ -5,6 +5,7 @@ import {
   createGame,
   updateGameByTitle,
   deleteGameByTitle,
+  getOrCreateGameByExternalId,
 } from "../services/game.service";
 
 export const getAllGamesController = async (
@@ -76,5 +77,21 @@ export const deleteGameByTitleController = async (
     res.json({ message: "Juego eliminado" });
   } catch (err) {
     res.status(500).json({ error: "Error al eliminar juego" });
+  }
+};
+
+// Crea o devuelve un juego a partir de un id externo (RAWG)
+export const upsertExternalGameController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { externalId } = req.params;
+    const game = await getOrCreateGameByExternalId(externalId);
+    res.status(201).json(game);
+  } catch (err: any) {
+    res
+      .status(500)
+      .json({ error: "Error al obtener/crear juego desde la API externa" });
   }
 };

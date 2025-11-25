@@ -1,6 +1,7 @@
 import { Document, Types } from "mongoose";
 
 export interface IGame {
+  externalId?: string;
   titulo: string;
   genero?: string;
   plataformas?: string[];
@@ -8,6 +9,7 @@ export interface IGame {
   lanzamiento?: string;
   modo?: string[];
   puntuacion?: number;
+  coverUrl?: string;
 }
 
 export interface IGameDocument extends IGame, Document {

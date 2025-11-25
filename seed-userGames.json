@@ -1,0 +1,132 @@
+[
+  {
+    "username": "aloloco",
+    "gameTitle": "The Witcher 3: Wild Hunt",
+    "status": "jugando",
+    "score": 95,
+    "notes": "Rejugando con todos los DLC",
+    "favorite": true,
+    "hoursPlayed": 120
+  },
+  {
+    "username": "aloloco",
+    "gameTitle": "Red Dead Redemption 2",
+    "status": "pendiente",
+    "notes": "Esperando tener tiempo para la campaña",
+    "favorite": false,
+    "hoursPlayed": 0
+  },
+  {
+    "username": "mariag",
+    "gameTitle": "Hollow Knight",
+    "status": "jugando",
+    "score": 90,
+    "notes": "Buscando todos los charms",
+    "favorite": true,
+    "hoursPlayed": 30
+  },
+  {
+    "username": "mariag",
+    "gameTitle": "Celeste",
+    "status": "completado",
+    "score": 97,
+    "notes": "Farewell pendiente",
+    "favorite": true,
+    "hoursPlayed": 25
+  },
+  {
+    "username": "carlosr",
+    "gameTitle": "Elden Ring",
+    "status": "completado",
+    "score": 98,
+    "notes": "Terminado con final Frenzy",
+    "favorite": true,
+    "hoursPlayed": 180
+  },
+  {
+    "username": "carlosr",
+    "gameTitle": "Dark Souls III",
+    "status": "jugando",
+    "score": 92,
+    "notes": "NG+1",
+    "favorite": true,
+    "hoursPlayed": 85
+  },
+  {
+    "username": "anam",
+    "gameTitle": "Stardew Valley",
+    "status": "jugando",
+    "notes": "Año 2, granja casi completa",
+    "favorite": false,
+    "hoursPlayed": 60
+  },
+  {
+    "username": "anam",
+    "gameTitle": "Animal Crossing: New Horizons",
+    "status": "pendiente",
+    "favorite": true,
+    "hoursPlayed": 5
+  },
+  {
+    "username": "pablod",
+    "gameTitle": "God of War",
+    "status": "completado",
+    "score": 94,
+    "notes": "Valquirias listas",
+    "favorite": true,
+    "hoursPlayed": 55
+  },
+  {
+    "username": "pablod",
+    "gameTitle": "Doom Eternal",
+    "status": "jugando",
+    "score": 88,
+    "favorite": false,
+    "hoursPlayed": 10
+  },
+  {
+    "username": "raulr",
+    "gameTitle": "FIFA 23",
+    "status": "jugando",
+    "notes": "Modo carrera",
+    "favorite": false,
+    "hoursPlayed": 40
+  },
+  {
+    "username": "raulr",
+    "gameTitle": "Rocket League",
+    "status": "jugando",
+    "favorite": true,
+    "hoursPlayed": 120
+  },
+  {
+    "username": "luciaj",
+    "gameTitle": "Hades",
+    "status": "jugando",
+    "notes": "Corriendo por el final verdadero",
+    "favorite": true,
+    "hoursPlayed": 50
+  },
+  {
+    "username": "luciaj",
+    "gameTitle": "Portal 2",
+    "status": "completado",
+    "favorite": true,
+    "hoursPlayed": 12
+  },
+  {
+    "username": "danielv",
+    "gameTitle": "Cyberpunk 2077",
+    "status": "jugando",
+    "notes": "Phantom Liberty pendiente",
+    "favorite": false,
+    "hoursPlayed": 35
+  },
+  {
+    "username": "danielv",
+    "gameTitle": "Baldur's Gate 3",
+    "status": "pendiente",
+    "favorite": true,
+    "hoursPlayed": 0
+  }
+]

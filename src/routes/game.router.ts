@@ -7,12 +7,14 @@ import {
   createGameController,
   updateGameByTitleController,
   deleteGameByTitleController,
+  upsertExternalGameController,
 } from "../controllers/game.controller";
 
 const router = Router();
 
 router.post("/", auth, validateGame, createGameController);
 router.put("/:titulo", auth, validateGame, updateGameByTitleController);
+router.post("/external/:externalId", auth, upsertExternalGameController);
 
 router.get("/", auth, getAllGamesController);
 router.get("/:titulo", auth, getGameByTitleController);

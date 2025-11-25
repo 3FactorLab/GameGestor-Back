@@ -1,7 +1,7 @@
 🎮 API GameGestor (Node + TypeScript + MongoDB)
 ===============================================
 
-API REST para gestionar usuarios y juegos con autenticación JWT, subida de imágenes y documentación Swagger. El objetivo es que cualquier miembro del equipo (incluidos juniors) pueda levantar el proyecto y entender rápidamente cómo fluyen las peticiones.
+API REST para gestionar usuarios y su biblioteca de juegos con autenticación JWT, subida de imágenes y documentación Swagger. Objetivo: permitir a cada usuario construir y mantener su colección personal (con estados, notas y favoritos) obteniendo la ficha del juego desde una API externa (RAWG) y cacheándola en Mongo para responder rápido y sin depender siempre del tercero. Cualquier miembro del equipo (incluidos juniors) debería poder levantar el proyecto y entender el flujo de extremo a extremo.
 
 🧭 Tabla rápida de contenidos
 - [🚀 Qué hace la app y stack](#-qué-hace-la-app-y-stack)
@@ -18,8 +18,9 @@ API REST para gestionar usuarios y juegos con autenticación JWT, subida de imá
 - [🧭 Notas de calidad y próximos pasos](#-notas-de-calidad-y-próximos-pasos)
 
 🚀 Qué hace la app y stack
-- API REST de usuarios y juegos con CRUD básico.
+- API REST de usuarios y juegos con CRUD básico + biblioteca personal.
 - Login con JWT y roles (user/admin) para proteger rutas y operaciones sensibles.
+- Biblioteca: cada usuario puede añadir juegos a su colección con estado, nota, favorito y horas; la ficha del juego se obtiene de RAWG y se cachea en Mongo (colección `juegos`).
 - Subida de imagen de perfil de usuario con Multer (se guarda en uploads/).
 - Stack: Node.js, Express 5, TypeScript, MongoDB/Mongoose, bcryptjs, express-validator, Swagger.
 
@@ -63,7 +64,7 @@ JWT_EXPIRES_IN=24h
 
 🧱 Modelos y validaciones
 - User (usuarios): nombre, apellido, email, telefono, username (único), password (hash bcrypt), role (user|admin), profilePicture (ruta relativa en uploads/). Timestamps activados.
-- Game (juegos): titulo (único), genero, plataformas[], desarrollador, lanzamiento, modo[], puntuacion. Timestamps activados.
+- Game (juegos): externalId (RAWG, único/sparse), titulo (único), genero, plataformas[], desarrollador, lanzamiento, modo[], puntuacion, coverUrl. Timestamps activados.
 - Validaciones: `validateUser` exige username, email válido y password de mínimo 6 caracteres. `validateGame` exige titulo y comprueba puntuacion 0-100.
 
 🛡️ Seguridad y middlewares
@@ -81,12 +82,18 @@ JWT_EXPIRES_IN=24h
   - GET `/usuarios/:username`: detalle.
   - PUT `/usuarios/:username`: actualiza datos y opcionalmente `profilePicture` (multipart/form-data).
   - DELETE `/usuarios/:username`: solo admin.
+- Biblioteca del usuario (siempre requiere Bearer token)
+  - GET `/usuarios/me/library`: devuelve la colección personal con datos básicos del juego.
+  - POST `/usuarios/me/library`: crea/actualiza un juego en la colección (body: `gameId` o `externalId`, y opcional `status`, `score`, `notes`, `favorite`, `hoursPlayed`). Si envías `externalId` (RAWG), el backend trae/crea el juego y lo enlaza.
+  - PUT `/usuarios/me/library/:gameId`: actualiza estado/notas/puntuación/favorito/horas de un juego ya añadido.
+  - DELETE `/usuarios/me/library/:gameId`: elimina el juego de la colección personal.
 - Juegos (requieren Bearer token; DELETE también requiere admin)
   - GET `/juegos`: lista juegos.
   - GET `/juegos/:titulo`: detalle por título.
   - POST `/juegos`: crea juego (valida título y puntuación).
   - PUT `/juegos/:titulo`: actualiza juego.
   - DELETE `/juegos/:titulo`: borra juego.
+  - POST `/juegos/external/:externalId`: crea/obtiene un juego desde RAWG y lo cachea.
 - Documentación: `/docs` (UI) y `/docs.json` (OpenAPI).
 - Estáticos: `/uploads/*` sirve las imágenes subidas.
 
@@ -106,3 +113,4 @@ Para más detalle visual, revisa `flujos.md` y `documents/Readme&POST.md`.
 - Añadir tests (Jest + Supertest) para auth, validaciones y roles (actualmente solo hay un placeholder en src/tests/health.test.ts).
 - Activar `configureSecurity(app)` en `src/index.ts` para entornos públicos y ajustar CORS a los orígenes del frontend.
 - Sustituir logs por un logger estructurado (p.ej. Winston) y añadir manejo de errores global.
+- Extender `/usuarios/me/library` para aceptar `externalId` y crear el juego vía RAWG automáticamente (hoy requiere `gameId` existente).
