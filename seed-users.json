@@ -1,0 +1,272 @@
+[
+  {
+    "nombre": "Alonso",
+    "apellido": "Viñé",
+    "email": "alonso@admin.com",
+    "telefono": "666777888",
+    "username": "aloloco",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "admin"
+  },
+  {
+    "nombre": "María",
+    "apellido": "García",
+    "email": "maria.garcia@email.com",
+    "telefono": "611223344",
+    "username": "mariag",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Carlos",
+    "apellido": "Rodríguez",
+    "email": "carlos.rodriguez@email.com",
+    "telefono": "622334455",
+    "username": "carlosr",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "admin"
+  },
+  {
+    "nombre": "Ana",
+    "apellido": "Martínez",
+    "email": "ana.martinez@email.com",
+    "telefono": "633445566",
+    "username": "anam",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "David",
+    "apellido": "López",
+    "email": "david.lopez@email.com",
+    "telefono": "644556677",
+    "username": "davidl",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Laura",
+    "apellido": "Sánchez",
+    "email": "laura.sanchez@email.com",
+    "telefono": "655667788",
+    "username": "lauras",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Javier",
+    "apellido": "Fernández",
+    "email": "javier.fernandez@email.com",
+    "telefono": "666778899",
+    "username": "javierf",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "admin"
+  },
+  {
+    "nombre": "Elena",
+    "apellido": "Gómez",
+    "email": "elena.gomez@email.com",
+    "telefono": "677889900",
+    "username": "elenag",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Pablo",
+    "apellido": "Díaz",
+    "email": "pablo.diaz@email.com",
+    "telefono": "688990011",
+    "username": "pablod",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Sara",
+    "apellido": "Ruiz",
+    "email": "sara.ruiz@email.com",
+    "telefono": "699001122",
+    "username": "sarar",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Miguel",
+    "apellido": "Hernández",
+    "email": "miguel.hernandez@email.com",
+    "telefono": "600112233",
+    "username": "miguelh",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Lucía",
+    "apellido": "Jiménez",
+    "email": "lucia.jimenez@email.com",
+    "telefono": "611223355",
+    "username": "luciaj",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Sergio",
+    "apellido": "Moreno",
+    "email": "sergio.moreno@email.com",
+    "telefono": "622334466",
+    "username": "sergiom",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "admin"
+  },
+  {
+    "nombre": "Carmen",
+    "apellido": "Álvarez",
+    "email": "carmen.alvarez@email.com",
+    "telefono": "633445577",
+    "username": "carmena",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Raúl",
+    "apellido": "Romero",
+    "email": "raul.romero@email.com",
+    "telefono": "644556688",
+    "username": "raulr",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Marta",
+    "apellido": "Torres",
+    "email": "marta.torres@email.com",
+    "telefono": "655667799",
+    "username": "martat",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Adrián",
+    "apellido": "Navarro",
+    "email": "adrian.navarro@email.com",
+    "telefono": "666778800",
+    "username": "adriann",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Cristina",
+    "apellido": "Gil",
+    "email": "cristina.gil@email.com",
+    "telefono": "677889911",
+    "username": "cristinag",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Daniel",
+    "apellido": "Vázquez",
+    "email": "daniel.vazquez@email.com",
+    "telefono": "688990022",
+    "username": "danielv",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Beatriz",
+    "apellido": "Serrano",
+    "email": "beatriz.serrano@email.com",
+    "telefono": "699001133",
+    "username": "beatrizs",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "admin"
+  },
+  {
+    "nombre": "Alberto",
+    "apellido": "Blanco",
+    "email": "alberto.blanco@email.com",
+    "telefono": "600112244",
+    "username": "albertob",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Natalia",
+    "apellido": "Castro",
+    "email": "natalia.castro@email.com",
+    "telefono": "611223366",
+    "username": "nataliac",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Jorge",
+    "apellido": "Ortiz",
+    "email": "jorge.ortiz@email.com",
+    "telefono": "622334477",
+    "username": "jorgeo",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Patricia",
+    "apellido": "Rubio",
+    "email": "patricia.rubio@email.com",
+    "telefono": "633445588",
+    "username": "patriciar",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Iván",
+    "apellido": "Molina",
+    "email": "ivan.molina@email.com",
+    "telefono": "644556699",
+    "username": "ivanm",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Silvia",
+    "apellido": "Delgado",
+    "email": "silvia.delgado@email.com",
+    "telefono": "655667700",
+    "username": "silviad",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Rubén",
+    "apellido": "Ramírez",
+    "email": "ruben.ramirez@email.com",
+    "telefono": "666778811",
+    "username": "rubenr",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "admin"
+  },
+  {
+    "nombre": "Andrea",
+    "apellido": "Suárez",
+    "email": "andrea.suarez@email.com",
+    "telefono": "677889922",
+    "username": "andreas",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Víctor",
+    "apellido": "Pascual",
+    "email": "victor.pascual@email.com",
+    "telefono": "688990033",
+    "username": "victorp",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  },
+  {
+    "nombre": "Rocío",
+    "apellido": "Méndez",
+    "email": "rocio.mendez@email.com",
+    "telefono": "699001144",
+    "username": "rociom",
+    "password": "$2a$10$rZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5qK8YvN3mYxJ9X3qH0/.vK5wZ5O",
+    "role": "user"
+  }
+]
