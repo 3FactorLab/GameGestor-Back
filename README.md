@@ -1,719 +1,108 @@
-# Diagrama de Flujo: Petición **POST** para crear un usuario (Express + TypeScript + Mongoose + MongoDB)
+🎮 API GameGestor (Node + TypeScript + MongoDB)
+===============================================
 
-Este documento describe paso a paso qué ocurre desde que Postman envía una petición **POST** hasta que se crea un usuario en la base de datos y se devuelve la respuesta.
+API REST para gestionar usuarios y juegos con autenticación JWT, subida de imágenes y documentación Swagger. El objetivo es que cualquier miembro del equipo (incluidos juniors) pueda levantar el proyecto y entender rápidamente cómo fluyen las peticiones.
 
----
+🧭 Tabla rápida de contenidos
+- [🚀 Qué hace la app y stack](#-qué-hace-la-app-y-stack)
+- [📂 Estructura de carpetas](#-estructura-de-carpetas-src)
+- [🛠️ Puesta en marcha local](#️-puesta-en-marcha-local)
+- [📜 Scripts de npm](#-scripts-de-npm)
+- [🔑 Variables de entorno](#-variables-de-entorno)
+- [🧱 Modelos y validaciones](#-modelos-y-validaciones)
+- [🛡️ Seguridad y middlewares](#️-seguridad-y-middlewares)
+- [🌐 Endpoints principales](#-endpoints-principales-resumen)
+- [🌱 Seeds y datos de ejemplo](#-seeds-y-datos-de-ejemplo)
+- [📖 Documentación Swagger](#-documentación-swagger)
+- [🔄 Flujo típico de una petición](#-flujo-típico-de-una-petición)
+- [🧭 Notas de calidad y próximos pasos](#-notas-de-calidad-y-próximos-pasos)
 
-## 📤 1. Postman envía la petición
+🚀 Qué hace la app y stack
+- API REST de usuarios y juegos con CRUD básico.
+- Login con JWT y roles (user/admin) para proteger rutas y operaciones sensibles.
+- Subida de imagen de perfil de usuario con Multer (se guarda en uploads/).
+- Stack: Node.js, Express 5, TypeScript, MongoDB/Mongoose, bcryptjs, express-validator, Swagger.
 
-**Ejemplo:**
+📂 Estructura de carpetas (src/)
+- config/: conexión a MongoDB y configuración de seguridad (CORS, Helmet, rate limit).
+- controllers/: orquestan cada petición y devuelven la respuesta HTTP.
+- routes/: define endpoints y encadena middlewares.
+- services/: lógica de negocio y acceso a Mongoose.
+- models/: esquemas Mongoose para User y Game.
+- validators/: reglas con express-validator para sanitizar entrada.
+- middleware/: auth JWT, control de rol admin y subida de archivos.
+- docs/: swaggerSpec para la documentación.
+- types/: tipados compartidos (incluye extensión de Express.Request con user).
+- uploads/: destino de imágenes subidas (servida como estático en /uploads).
 
-``` typescript
-POST http://localhost:3002/usuarios
-Content-Type: application/json
+🛠️ Puesta en marcha local
+1) Requisitos: Node 18+ y MongoDB accesible (local o Atlas).
+2) Instalación: `npm install`
+3) Variables: crear un archivo `.env` en la raíz (ver sección siguiente).
+4) Desarrollo: `npm run dev` arranca con recarga (ts-node-dev) en el puerto 5000 por defecto.
+5) Producción: `npm run build` compila a dist/ y `npm start` ejecuta la versión compilada.
+6) Documentación: visitar `http://localhost:5000/docs` para ver Swagger UI.
+
+📜 Scripts de npm
+- `npm run dev`: ejecuta src/index.ts con ts-node-dev (respawn y watch).
+- `npm run build`: compila TypeScript a JavaScript en dist/.
+- `npm start`: levanta la versión compilada desde dist/index.js.
+- `npm run seeds`: carga los archivos seed-*.json en Mongo (limpia e inserta).
+
+🔑 Variables de entorno
+Crea un `.env` con:
 ```
-
-**Body (JSON):**
-
-```json
-{
-  "username": "juanito",
-  "nombre": "Juan",
-  "email": "juan@gmail.com"
-}
+DB_URI=mongodb+srv://<usuario>:<password>@<cluster>/<db>
+PORT=5000
+JWT_SECRET=clave_larga_y_segura
+JWT_EXPIRES_IN=24h
 ```
-
----
-
-## 🛣️ 2. Express recibe la petición en `src/index.ts`
-
-```ts
-app.use("/usuarios", userRoutes);
-```
-
-- Express detecta que la ruta empieza por `/usuarios`.
-- Redirige la petición a `src/routes/user.routes.ts`.
-
----
-
-## 🔀 3. El router detecta el endpoint `POST /usuarios`
-
-En `src/routes/user.routes.ts`:
-
-```ts
-router.post("/", async (req, res) => {
-  const nuevo = await createUser(req.body);
-  res.status(201).json(nuevo);
-});
-```
-
-Acciones:
-
-- `req.body` contiene los datos enviados desde Postman.
-- Se llama a la función de servicio:  
-  **`createUser(req.body)`**
-
----
-
-## 🧩 4. El router delega la lógica al SERVICE
-
-En `src/services/user.service.ts`:
-
-```ts
-export const createUser = (data: any) => User.create(data);
-```
-
-El service:
-
-- Llama a **`User.create()`** de Mongoose.
-- Pasa los datos del usuario a la base de datos.
-
----
-
-## ⚙️ 5. Mongoose procesa la operación
-
-Mongoose realiza:
-
-- Validación del schema (definido en `src/models/user.model.ts`).
-- Comprobación del campo `username` (único).
-- Preparación del documento.
-- Envío de la operación `insertOne` a MongoDB.
-
----
-
-## 🗄️ 6. MongoDB escribe el documento
-
-MongoDB:
-
-- Genera un `_id`.
-- Inserta el documento en la colección `usuarios`.
-- Devuelve el usuario creado a Mongoose.
-
-Ejemplo:
-
-```json
-{
-  "_id": "671b1dxxx",
-  "username": "juanito",
-  "nombre": "Juan",
-  "email": "juan@gmail.com",
-  "__v": 0
-}
-```
-
----
-
-## 🔁 7. Mongoose entrega el resultado al service
-
-`User.create()` → devuelve el nuevo usuario ya guardado.
-
----
-
-## 📦 8. El service devuelve el resultado al router
-
-`createUser()` devuelve el usuario creado.
-
----
-
-## 📤 9. El router envía la respuesta final a Express/Postman
-
-```ts
-res.status(201).json(nuevo);
-```
-
-Express convierte el objeto a JSON y lo envía como respuesta HTTP.
-
----
-
-## 📥 10. Postman recibe el resultado
-
-```json
-{
-  "_id": "671b1dxxx",
-  "username": "juanito",
-  "nombre": "Juan",
-  "email": "juan@gmail.com"
-}
-```
-
----
-
-# 🧭 Diagrama Visual Resumido
-
-```
-Postman
-   ↓ POST /usuarios
-Express (src/index.ts)
-   ↓ ruta /usuarios
-Router (src/routes/user.routes.ts)
-   ↓ createUser(req.body)
-Service (src/services/user.service.ts)
-   ↓ User.create()
-Mongoose
-   ↓ INSERT
-MongoDB
-   ↑ documento creado
-Mongoose
-   ↑ objeto creado
-Service
-   ↑ resultado
-Router
-   ↑ res.json(...)
-Express
-   ↑ respuesta HTTP
-Postman
-```
-          ┌─────────────────────────────┐
-          │         src/index.ts        │
-          │-----------------------------│
-          │ await connectDB();          │
-          │ app.use("/usuarios", ... )  │
-          └──────────────┬──────────────┘
-                         │
-                         ▼
-        ┌──────────────────────────────────┐
-        │         src/config/db.ts         │
-        │----------------------------------│
-        │ mongoose.connect(dbUrl)          │
-        │   │                              │
-        │   ▼                              │
-        │  🔌 CREA UNA CONEXIÓN GLOBAL     │
-        │     dentro de Mongoose           │
-        └──────────────────┬───────────────┘
-                           │
-                           ▼
-      ┌────────────────────────────────────────┐
-      │        src/models/user.model.ts        │
-      │--------------------------------------- │
-      │ const userSchema = new Schema(...)     │
-      │ export const User = model("User", ...) │
-      └───────────────┬────────────────────────┘
-                      │
-                      ▼
-        ◤ TODOS LOS MODELOS USAN LA MISMA ◥
-        ◣ CONEXIÓN CREADA EN db.ts        ◢
-
-                      │
-                      ▼
-
-       ┌──────────────────────────────────────┐
-       │      src/services/user.service.ts    │
-       │--------------------------------------│
-       │ User.find()                          │
-       │ User.findOne()                       │
-       │ User.create()                        │
-       │ User.update()                        │
-       │ User.delete()                        │
-       └──────────────────┬───────────────────┘
-                          │
-                          ▼
-              🔽 OPERACIONES EN MONGO 🔽
-
-┌──────────────────────────────────────────────────────┐
-│                     MongoDB                           │
-│-------------------------------------------------------│
-│   almacena documentos                                 │
-│   colecciones (usuarios, etc.)                        │
-│   guarda, busca, actualiza, elimina                   │
-└──────────────────────────────────────────────────────┘
-
----
-
-# 🎮 Flujo: Petición **POST** para crear un juego (Con Controlador)
-
-Este flujo es similar al de usuarios, pero incluye una capa adicional explícita: el **Controlador**.
-
-## 1. Postman envía la petición
-
-```
-POST http://localhost:3002/juegos
-Content-Type: application/json
-```
-
-**Body (JSON):**
-
-```json
-{
-  "titulo": "Super Mario Bros",
-  "genero": "Plataformas",
-  "plataformas": ["NES"],
-  "desarrollador": "Nintendo",
-  "lanzamiento": "1985",
-  "puntuacion": 10
-}
-```
-
----
-
-## 2. Express recibe la petición
-
-En `src/index.ts`:
-```ts
-app.use("/juegos", gameRoutes);
-```
-
----
-
-## 3. El Router detecta el endpoint
-
-En `src/routes/game.routes.ts`:
-
-```ts
-router.post("/", createGameController);
-```
-
-Aquí la diferencia principal: **El router llama al CONTROLLER**, no directamente al servicio.
-
----
-
-## 4. El Controlador procesa la petición
-
-En `src/controllers/game.controller.ts`:
-
-```ts
-export const createGameController = async (req: Request, res: Response) => {
-  try {
-    const nuevo = await createGame(req.body); // Llama al servicio
-    res.status(201).json(nuevo);
-  } catch (err) {
-    res.status(500).json({ error: ... });
-  }
-};
-```
-
-El controlador se encarga de:
-- Recibir `req` y `res` (Tipados con TypeScript).
-- Manejar errores (try/catch).
-- Responder al cliente (`res.json`).
-
----
-
-## 5. El Servicio interactúa con Mongoose
-
-En `src/services/game.service.ts`:
-
-```ts
-export const createGame = (data: any) => Game.create(data);
-```
-
----
-
-## 6. Mongoose y MongoDB
-
-Igual que en el flujo de usuarios, Mongoose valida el esquema (`src/models/game.model.ts`) y guarda en MongoDB.
-
----
-
-## 🧭 Diagrama Visual (Juegos)
-
-```
-Postman
-   ↓ POST /juegos
-Express
-   ↓
-Router (src/routes/game.routes.ts)
-   ↓ createGameController
-Controlador (src/controllers/game.controller.ts) 👈 CAPA EXTRA
-   ↓ createGame(data)
-Service (src/services/game.service.ts)
-   ↓ Game.create()
-Mongoose/MongoDB
-```
-
----
-
-# 🔐 Autenticación y Seguridad
-
-Hemos implementado un sistema completo de seguridad. Aquí te explico cómo funciona cada pieza.
-
-## 1. Encriptación de Contraseñas (Bcrypt)
-
-Nunca guardamos contraseñas reales.
-- **Al crear usuario:** El servicio usa `bcrypt.hash(password, 10)` para convertir "123" en `$2a$10$Kj8...`.
-- **Al hacer login:** Usamos `bcrypt.compare()` para verificar si la contraseña coincide con el hash guardado.
-
-## 2. Login y Tokens (JWT)
-
-Para acceder a la API, primero necesitas un "pase VIP" (Token).
-
-### **Paso 1: Login**
-Envía tus credenciales:
-
-```
-POST /usuarios/login
-{
-  "username": "tu_usuario",
-  "password": "tu_password"
-}
-```
-
-Si son correctas, recibirás:
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-### **Paso 2: Usar el Token**
-Para cualquier otra petición (ej: `GET /juegos`), debes poner el token en la cabecera:
-
-- **Key:** `Authorization`
-- **Value:** `Bearer TU_TOKEN_AQUI`
-
-## 3. Middleware de Protección (`src/middleware/auth.middleware.ts`)
-
-Es el "portero" de la API. Se coloca en las rutas privadas:
-
-```ts
-router.get("/", auth, getAllGamesController);
-```
-
-1.  Busca la cabecera `Authorization`.
-2.  Verifica que el token sea válido y no haya caducado (usando `jwt.verify`).
-3.  Si todo está bien, deja pasar (`next()`). Si no, devuelve error 401.
-
----
-
-# 🛡️ Validación de Datos
-
-Para evitar que entren datos "basura", usamos `express-validator`.
-
-## Ejemplo: Crear Usuario
-
-Antes de llegar al controlador, los datos pasan por `validateUser`:
-
-```ts
-router.post("/", validateUser, createUserController);
-```
-
-Reglas actuales:
-- **username:** Obligatorio y no vacío.
-- **email:** Debe ser un formato de email válido.
-- **password:** Mínimo 6 caracteres.
-
-Si envías datos incorrectos, recibirás un error 400 con los detalles:
-
-```json
-{
-  "errors": [
-    {
-      "msg": "El password debe tener al menos 6 caracteres",
-      "path": "password",
-      ...
-    }
-  ]
-}
-```
-
----
-
-# 📜 Scripts del Proyecto
-
-Este proyecto usa **TypeScript**, por lo que los comandos son un poco diferentes a un proyecto de Node.js puro.
-
-### 🛠️ Desarrollo
-Para levantar el servidor en modo desarrollo (con recarga automática):
-```bash
-npm run dev
-```
-*Usa `ts-node-dev` para ejecutar los archivos .ts directamente.*
-
-### 🏗️ Producción
-Para compilar el código TypeScript a JavaScript (carpeta `dist/`):
-```bash
-npm run build
-```
-
-Para ejecutar el código compilado:
-```bash
-npm start
-```
-
-### 🌱 Semillas (Seeds)
-Para rellenar la base de datos con datos de prueba:
-```bash
-npm run seeds
-```
-
----
-
-# 🚀 Mejoras Futuras
-
-Esta sección documenta posibles mejoras para implementar en el futuro.
-
-## 🔥 Prioridad Alta
-
-### 1. Paginación
-Implementar paginación en los endpoints de listado para mejorar el rendimiento con grandes volúmenes de datos.
-
-**Ejemplo:**
-```
-GET /juegos?page=1&limit=20
-GET /usuarios?page=2&limit=10
-```
-
-**Beneficios:**
-- Mejor rendimiento
-- Reducción de carga en el servidor
-- Mejor experiencia de usuario
-
----
-
-### 2. Búsqueda y Filtros
-Permitir búsquedas y filtros avanzados en los juegos.
-
-**Ejemplos:**
-```
-GET /juegos?genero=RPG
-GET /juegos?plataforma=PC&puntuacion=90
-GET /juegos?search=zelda
-```
-
-**Beneficios:**
-- Funcionalidad esencial para el usuario
-- Facilita encontrar juegos específicos
-
----
-
-### 3. Relaciones Usuario-Juego (Biblioteca Personal)
-Crear un sistema de biblioteca personal donde los usuarios puedan:
-- Marcar juegos como favoritos
-- Establecer estados: "Jugando", "Completado", "Pendiente"
-- Añadir notas personales
-
-**Endpoints propuestos:**
-```
-POST /usuarios/me/biblioteca
-GET /usuarios/me/biblioteca
-PUT /usuarios/me/biblioteca/:juegoId
-DELETE /usuarios/me/biblioteca/:juegoId
-```
-
-**Beneficios:**
-- Funcionalidad core de un gestor de juegos
-- Mayor engagement del usuario
-
----
-
-## 🛡️ Seguridad y Robustez
-
-### 4. Rate Limiting
-Implementar límites de peticiones para prevenir abusos y ataques DDoS.
-
-**Librería:** `express-rate-limit`
-
-**Configuración sugerida:**
-- 100 peticiones por IP cada 15 minutos
-- Límites más estrictos para endpoints sensibles (login, registro)
-
-**Beneficios:**
-- Protección contra ataques
-- Prevención de spam
-
----
-
-### 5. CORS Configurado
-Configurar CORS para permitir peticiones desde el frontend.
-
-**Librería:** `cors`
-
-```ts
-app.use(cors({ 
-  origin: 'http://localhost:3000',
-  credentials: true 
-}));
-```
-
-**Beneficios:**
-- Preparación para frontend
-- Control de orígenes permitidos
-
----
-
-### 6. Helmet.js
-Añadir headers de seguridad HTTP automáticamente.
-
-**Librería:** `helmet`
-
-**Beneficios:**
-- Protección contra XSS
-- Protección contra clickjacking
-- Headers de seguridad estándar
-
----
-
-## 🔄 Mejoras de Autenticación
-
-### 7. Refresh Tokens
-Implementar tokens de refresco para mejorar la experiencia de usuario.
-
-**Flujo:**
-1. Login devuelve `accessToken` (corta duración) + `refreshToken` (larga duración)
-2. Cuando el accessToken expira, usar refreshToken para obtener uno nuevo
-3. No es necesario volver a hacer login
-
-**Beneficios:**
-- Mejor UX (no desconectar cada 2 horas)
-- Más seguro que tokens de larga duración
-
----
-
-### 8. Recuperación de Contraseña
-Implementar flujo de "Olvidé mi contraseña".
-
-**Flujo:**
-1. Usuario solicita reset
-2. Se envía email con token temporal
-3. Usuario usa token para establecer nueva contraseña
-
-**Requiere:**
-- Servicio de email (Nodemailer, SendGrid)
-- Tokens temporales en BD
-
----
-
-## 📊 Mejoras de Datos
-
-### 9. Timestamps Automáticos
-Añadir `createdAt` y `updatedAt` a todos los modelos.
-
-```ts
-{ timestamps: true }
-```
-
-**Beneficios:**
-- Auditoría
-- Ordenar por fecha de creación
-
----
-
-### 10. Soft Delete
-Implementar borrado lógico en lugar de físico.
-
-**Concepto:**
-- Añadir campo `deletedAt`
-- No borrar registros, solo marcarlos como eliminados
-- Filtrar registros eliminados en las consultas
-
-**Beneficios:**
-- Recuperación de datos
-- Auditoría completa
-
----
-
-## 🧪 Testing y Calidad
-
-### 11. Tests Automatizados
-Implementar tests unitarios e integración.
-
-**Librería:** Jest o Mocha
-
-**Ejemplos de tests:**
-- ¿Devuelve 403 si un user intenta borrar un juego?
-- ¿El login devuelve un token válido?
-- ¿La validación rechaza emails inválidos?
-
-**Beneficios:**
-- Confianza en los cambios
-- Prevención de regresiones
-
----
-
-### 12. Logging Profesional
-Sustituir `console.log` por un sistema de logging estructurado.
-
-**Librerías:** Winston o Pino
-
-**Beneficios:**
-- Logs estructurados
-- Niveles de log (info, warn, error)
-- Rotación de archivos
-
----
-
-## 🚀 Funcionalidades Avanzadas
-
-### 13. Subida de Imágenes
-Permitir que los juegos tengan portadas.
-
-**Servicios:** Cloudinary, AWS S3
-
-**Beneficios:**
-- Mejor presentación visual
-- Gestión de assets
-
----
-
-### 14. Notificaciones por Email
-Enviar emails en eventos importantes.
-
-**Ejemplos:**
-- Email de bienvenida al registrarse
-- Notificación cuando un admin elimina tu juego favorito
-
-**Servicios:** Nodemailer, SendGrid
-
----
-
-### 15. WebSockets
-Implementar comunicación en tiempo real.
-
-**Casos de uso:**
-- Notificaciones en vivo
-- Chat entre usuarios
-- Actualizaciones de estado
-
-**Librería:** Socket.io
-
----
-
-### 16. Exportar/Importar Biblioteca
-Permitir a los usuarios exportar su biblioteca en JSON/CSV.
-
-**Beneficios:**
-- Portabilidad de datos
-- Backup personal
-
----
-
-## 📈 Analíticas
-
-### 17. Estadísticas de Uso
-Implementar métricas y estadísticas.
-
-**Ejemplos:**
-- Juegos más populares
-- Géneros más jugados
-- Usuarios más activos
-
-**Beneficios:**
-- Insights de negocio
-- Mejora de producto
-
----
-
-# 1. 🛡️ Seguridad (Prioridad Alta)
-Actualmente tu API es funcional pero vulnerable a ataques comunes.
-
-Helmet: Protege contra vulnerabilidades conocidas de cabeceras HTTP.
-CORS: Controla quién puede consumir tu API (ahora mismo cualquiera o nadie dependiendo del entorno).
-Rate Limiting: Evita ataques de fuerza bruta o DDoS limitando el número de peticiones por IP.
-Sanitización: Limpiar los datos de entrada para evitar inyecciones NoSQL/XSS.
-2. 🧪 Testing (Calidad)
-No veo librerías de test en tu 
-package.json
-.
-
-Jest + Supertest: Para crear tests unitarios y de integración. Es vital para asegurar que "lo que funcionaba ayer, siga funcionando hoy" tras tus cambios.
-3. 🚨 Manejo de Errores Global
-Ahora mismo usas try/catch en cada controlador repetitivamente.
-
-Global Error Handler: Un middleware único que capture todos los errores. Esto limpia tu código (menos try/catch) y estandariza las respuestas de error (siempre devolver el mismo formato JSON).
-4. 📝 Logs y Monitorización
-Usas console.log, que no es ideal para producción.
-
-Morgan: Para ver en consola qué peticiones llegan (método, url, status, tiempo).
-Winston: Para guardar logs en archivos (errores, info) y tener un historial si algo falla.
-5. 🧹 Calidad de Código (DX)
-ESLint + Prettier: Para forzar un estilo de código consistente y evitar errores tontos automáticamente.
-Husky: Para ejecutar validaciones antes de cada commit (evita subir código roto).
+- DB_URI: cadena de conexión de MongoDB.
+- PORT: puerto en el que se expone la API.
+- JWT_SECRET y JWT_EXPIRES_IN: firma y caducidad de los tokens.
+
+🧱 Modelos y validaciones
+- User (usuarios): nombre, apellido, email, telefono, username (único), password (hash bcrypt), role (user|admin), profilePicture (ruta relativa en uploads/). Timestamps activados.
+- Game (juegos): titulo (único), genero, plataformas[], desarrollador, lanzamiento, modo[], puntuacion. Timestamps activados.
+- Validaciones: `validateUser` exige username, email válido y password de mínimo 6 caracteres. `validateGame` exige titulo y comprueba puntuacion 0-100.
+
+🛡️ Seguridad y middlewares
+- Autenticación JWT (`auth`): verifica la cabecera Authorization Bearer, adjunta `req.user` y devuelve 401 si es inválido.
+- Autorización de rol (`isAdmin`): bloquea acciones sensibles para usuarios sin rol admin (por ejemplo, DELETE de juegos/usuarios).
+- Subida de archivos (`upload.single("profilePicture")`): guarda imágenes JPEG/PNG hasta 5 MB en uploads/.
+- CORS, Helmet y Rate Limiting: definidos en `configureSecurity` (config/security.ts). Están listos para usarse; activa la llamada en src/index.ts si se despliega en un entorno público.
+
+🌐 Endpoints principales (resumen)
+- Auth
+  - POST `/usuarios/login`: devuelve JWT.
+  - POST `/usuarios`: registro público con validación.
+- Usuarios (requieren Bearer token salvo el registro y login)
+  - GET `/usuarios`: lista usuarios.
+  - GET `/usuarios/:username`: detalle.
+  - PUT `/usuarios/:username`: actualiza datos y opcionalmente `profilePicture` (multipart/form-data).
+  - DELETE `/usuarios/:username`: solo admin.
+- Juegos (requieren Bearer token; DELETE también requiere admin)
+  - GET `/juegos`: lista juegos.
+  - GET `/juegos/:titulo`: detalle por título.
+  - POST `/juegos`: crea juego (valida título y puntuación).
+  - PUT `/juegos/:titulo`: actualiza juego.
+  - DELETE `/juegos/:titulo`: borra juego.
+- Documentación: `/docs` (UI) y `/docs.json` (OpenAPI).
+- Estáticos: `/uploads/*` sirve las imágenes subidas.
+
+🌱 Seeds y datos de ejemplo
+- Archivos `seed-users.json` y `seed-games.json` en la raíz.
+- Ejecuta `npm run seeds` tras configurar `.env`: conecta a Mongo, limpia las colecciones mapeadas y las repuebla según los seeds. El mapa modelo-archivo está en `src/seed.ts` (usa el prefijo seed-*.json).
+
+🔄 Flujo típico de una petición
+1) Router: la ruta aplica middlewares (auth, validaciones, subida de archivos).
+2) Controlador: maneja la petición, atrapa errores y delega.
+3) Servicio: ejecuta la lógica y consulta Mongoose.
+4) Mongoose/MongoDB: persiste y devuelve documentos.
+5) Respuesta: el controlador serializa el resultado a JSON.
+Para más detalle visual, revisa `flujos.md` y `documents/Readme&POST.md`.
+
+🧭 Notas de calidad y próximos pasos
+- Añadir tests (Jest + Supertest) para auth, validaciones y roles (actualmente solo hay un placeholder en src/tests/health.test.ts).
+- Activar `configureSecurity(app)` en `src/index.ts` para entornos públicos y ajustar CORS a los orígenes del frontend.
+- Sustituir logs por un logger estructurado (p.ej. Winston) y añadir manejo de errores global.
