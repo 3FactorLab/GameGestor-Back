@@ -39,6 +39,24 @@ export const getOrCreateGameByExternalId = async (
 
   // Consultamos RAWG y normalizamos
   const normalized = await fetchGameByExternalId(externalId);
+  // Intentamos hacer match por título si ya existe en seeds/base
+  const byTitle = await Game.findOne({ titulo: normalized.titulo });
+  if (byTitle) {
+    // Si no tenía externalId, lo añadimos y actualizamos campos nuevos
+    if (!byTitle.externalId) byTitle.externalId = normalized.externalId;
+    byTitle.coverUrl = byTitle.coverUrl || normalized.coverUrl;
+    byTitle.genero = byTitle.genero || normalized.genero;
+    byTitle.plataformas = byTitle.plataformas?.length
+      ? byTitle.plataformas
+      : normalized.plataformas;
+    byTitle.desarrollador = byTitle.desarrollador || normalized.desarrollador;
+    byTitle.lanzamiento = byTitle.lanzamiento || normalized.lanzamiento;
+    byTitle.modo = byTitle.modo?.length ? byTitle.modo : normalized.modo;
+    byTitle.puntuacion = byTitle.puntuacion || normalized.puntuacion;
+    await byTitle.save();
+    return byTitle;
+  }
+
   const created = await Game.create(normalized);
   return created;
 };

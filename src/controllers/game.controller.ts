@@ -90,8 +90,8 @@ export const upsertExternalGameController = async (
     const game = await getOrCreateGameByExternalId(externalId);
     res.status(201).json(game);
   } catch (err: any) {
-    res
-      .status(500)
-      .json({ error: "Error al obtener/crear juego desde la API externa" });
+    const message =
+      err?.message || "Error al obtener/crear juego desde la API externa";
+    res.status(502).json({ error: message });
   }
 };

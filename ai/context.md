@@ -34,3 +34,17 @@
   - Próximos pasos: Reejecutar `npm run seeds` y verificar que no haya warnings de omisión en userGames.
   - Archivos tocados: seed-users.json.
   - Notas/Riesgos: Solo válido para desarrollo; revisar siempre credenciales antes de desplegar.
+
+- 2025-11-25T00:00:00Z
+  - Acciones: Añadido User-Agent y timeout en la llamada a RAWG, con log de errores; el controlador ahora devuelve 502 con mensaje de RAWG en fallos externos.
+  - Decisiones: Mejorar trazabilidad de fallos externos y cumplir el requisito de User-Agent de RAWG.
+  - Próximos pasos: Probar de nuevo `/juegos/external/{id}` con clave en .env; si sigue fallando, revisar restricciones de red.
+  - Archivos tocados: src/services/externalGamesApi.service.ts, src/controllers/game.controller.ts.
+  - Notas/Riesgos: Si no hay salida a red, seguirá fallando; en ese caso se necesita permitir tráfico o mockear.
+
+- 2025-11-25T00:00:00Z
+  - Acciones: Añadido import de dotenv en externalGamesApi.service y se mejoró getOrCreateGameByExternalId para evitar errores de duplicado: si el título ya existe (p.ej., seeding), se actualiza el registro existente con externalId y campos faltantes en lugar de crear uno nuevo.
+  - Decisiones: Priorizar reutilizar juegos por título cuando no hay externalId para no romper la unicidad de `titulo`.
+  - Próximos pasos: Probar de nuevo `/juegos/external/3498` (GTA V) y otros IDs; si ya está el título en seeds, debe asociar el externalId sin duplicar.
+  - Archivos tocados: src/services/externalGamesApi.service.ts, src/services/game.service.ts.
+  - Notas/Riesgos: Coincidencias por título pueden fallar si el naming difiere; en ese caso se requeriría un mapping más robusto.
