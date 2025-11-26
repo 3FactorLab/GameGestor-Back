@@ -13,6 +13,8 @@ dist/
 # uploads/
 uploads/
 
+vscode/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
